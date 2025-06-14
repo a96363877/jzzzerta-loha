@@ -19,3 +19,10 @@ export interface PaymentDocument {
     isHidden?: string
   }
   
+  
+  export interface PaymentStats {
+    total: number
+    connected: number
+    today: number
+  }
+  
