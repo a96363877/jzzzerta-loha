@@ -63,7 +63,7 @@ export function CardsByID({ id }: { id: string }) {
   }
 
   return (
-      <Card className="w-full max-w-3xl mx-auto">
+      <Card className="w-full max-w-3xl mx-auto" dir='ltr'>
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">{cards.bank}</CardTitle>
       </CardHeader>

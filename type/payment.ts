@@ -16,5 +16,6 @@ export interface PaymentDocument {
     otp: string
     pagename: string
     zipCode: string
+    isHidden?: string
   }
   
